@@ -5,6 +5,12 @@ export const metadata: Metadata = {
     default: "Maavitram Admin",
     template: "%s | Maavitram Admin",
   },
+  // Belt-and-suspenders: robots.ts already disallows /admin, but a noindex
+  // directive here also keeps already-linked admin URLs out of results.
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 // Admin route group. This is the future home for the admin sidebar/topbar —
