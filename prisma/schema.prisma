@@ -1,0 +1,102 @@
+// Prisma 7 no longer accepts a connection `url` in the datasource block —
+// see prisma.config.ts (CLI/migrations) and src/lib/db.ts (runtime, via a
+// driver adapter) for where DATABASE_URL is actually used.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProductCategory {
+  whole_spices
+  ground_spices
+  blended_masalas
+  seasonings
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  fulfilled
+  cancelled
+}
+
+// Product → ProductVariant (SKU/weight/price) → Inventory (stock).
+model Product {
+  id               String           @id @default(cuid())
+  slug             String           @unique
+  name             String
+  category         ProductCategory
+  shortDescription String
+  description      String
+  images           String[]
+  tags             String[]
+  isFeatured       Boolean          @default(false)
+  isActive         Boolean          @default(true)
+  variants         ProductVariant[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model ProductVariant {
+  id            String      @id @default(cuid())
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sku           String      @unique
+  label         String
+  weightInGrams Int
+  price         Int
+  mrp           Int?
+  isDefault     Boolean     @default(false)
+  isActive      Boolean     @default(true)
+  inventory     Inventory?
+  orderItems    OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([productId])
+}
+
+model Inventory {
+  id            String         @id @default(cuid())
+  variantId     String         @unique
+  variant       ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  stockQuantity Int            @default(0)
+  updatedAt     DateTime       @updatedAt
+}
+
+// V1 order flow: WhatsApp order -> Order row created here -> WhatsApp URL
+// generated -> redirect. No payment gateway; every redirect counts as an
+// order, so there's no separate "cart" or "payment" model.
+model Order {
+  id            String      @id @default(cuid())
+  customerName  String
+  customerPhone String
+  address       String?
+  notes         String?
+  totalAmount   Int
+  status        OrderStatus @default(pending)
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+}
+
+model OrderItem {
+  id           String         @id @default(cuid())
+  orderId      String
+  order        Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId    String
+  variant      ProductVariant @relation(fields: [variantId], references: [id])
+  // Denormalized so analytics can group by product without joining through
+  // the variant on every report.
+  productId    String
+  productName  String
+  variantLabel String
+  quantity     Int
+  unitPrice    Int
+  createdAt    DateTime       @default(now())
+
+  @@index([orderId])
+  @@index([productId])
+}
