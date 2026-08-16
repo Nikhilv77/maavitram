@@ -80,7 +80,14 @@ export function Hero() {
                 className="hero-reveal mt-6"
               >
                 <Link
-                  href="/shop"
+                  href="#products"
+                  scroll={false}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    document
+                      .getElementById("products")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="btn btn-primary min-h-11 gap-2 rounded-md px-6 text-xs shadow-sm"
                 >
                   Explore Our Masalas
