@@ -13,14 +13,16 @@ if (!databaseUrl) {
   );
 }
 
-const db = new PrismaClient({ adapter: new PrismaPg(databaseUrl) });
+const db = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: databaseUrl }),
+});
 
 // The four Maavitram signature blends — names and flavour profiles match
 // the brand's theme accent colours (--tez, --saumya, --achaari, --lal-tadka).
 const products: ProductSeedInput[] = [
   {
     slug: "maavitram-tez",
-    name: "Maavitram Tez",
+    name: "Maavitram Mix Tez",
     category: "blended_masalas",
     shortDescription:
       "Bold, high-heat all-purpose masala for those who like it fiery.",
@@ -57,7 +59,7 @@ const products: ProductSeedInput[] = [
   },
   {
     slug: "maavitram-saumya",
-    name: "Maavitram Saumya",
+    name: "Maavitram Mix Saumya",
     category: "blended_masalas",
     shortDescription:
       "A gentle, aromatic all-purpose masala for everyday cooking.",

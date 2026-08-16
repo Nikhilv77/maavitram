@@ -35,6 +35,10 @@ export function AboutStory() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-y-0 left-0 hidden w-[48%] bg-[radial-gradient(circle_at_26%_76%,rgba(201,144,22,0.07),transparent_34%)] lg:block"
         />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 left-0 hidden w-[52%] bg-[radial-gradient(ellipse_at_18%_24%,rgba(243,227,200,0.16),transparent_34%),radial-gradient(ellipse_at_42%_62%,rgba(244,231,210,0.13),transparent_30%)] lg:block"
+        />
         <CreamGradientPatches />
 
         <div className="relative z-10 lg:flex lg:min-h-[540px] lg:items-center xl:min-h-[580px]">
@@ -101,35 +105,49 @@ function CreamGradientPatches() {
       className="pointer-events-none absolute inset-y-0 left-0 z-[2] hidden w-[55%] overflow-hidden lg:block"
     >
       <span
-        className="absolute top-[7%] left-[6%] h-36 w-52 -rotate-12 rounded-full opacity-20 blur-2xl"
+        className="absolute top-[7%] left-[6%] h-36 w-52 -rotate-12 rounded-full opacity-24 blur-2xl"
         style={{
           background:
             "linear-gradient(135deg, rgba(117,128,110,0.34) 0%, rgba(243,227,200,0.22) 52%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[25%] left-[35%] h-28 w-64 rotate-6 rounded-full opacity-22 blur-2xl"
+        className="absolute top-[18%] left-[2%] h-20 w-40 rotate-3 rounded-full opacity-18 blur-xl"
+        style={{
+          background:
+            "linear-gradient(120deg, rgba(244,231,210,0.36) 0%, rgba(201,144,22,0.12) 56%, transparent 100%)",
+        }}
+      />
+      <span
+        className="absolute top-[25%] left-[35%] h-28 w-64 rotate-6 rounded-full opacity-26 blur-2xl"
         style={{
           background:
             "linear-gradient(115deg, transparent 0%, rgba(201,144,22,0.3) 42%, rgba(244,231,210,0.22) 72%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[52%] left-[8%] h-32 w-72 rotate-3 rounded-full opacity-20 blur-2xl"
+        className="absolute top-[44%] left-[30%] h-24 w-56 -rotate-2 rounded-full opacity-19 blur-xl"
+        style={{
+          background:
+            "linear-gradient(130deg, transparent 0%, rgba(243,227,200,0.34) 34%, rgba(201,144,22,0.12) 72%, transparent 100%)",
+        }}
+      />
+      <span
+        className="absolute top-[52%] left-[8%] h-32 w-72 rotate-3 rounded-full opacity-24 blur-2xl"
         style={{
           background:
             "linear-gradient(125deg, rgba(243,227,200,0.46) 0%, rgba(201,144,22,0.18) 52%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[70%] left-[36%] h-24 w-44 -rotate-6 rounded-full opacity-16 blur-2xl"
+        className="absolute top-[70%] left-[36%] h-24 w-44 -rotate-6 rounded-full opacity-20 blur-2xl"
         style={{
           background:
             "linear-gradient(135deg, transparent 0%, rgba(201,144,22,0.28) 46%, rgba(243,227,200,0.18) 78%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[37%] left-[2%] h-20 w-36 -rotate-3 rounded-full opacity-14 blur-xl"
+        className="absolute top-[37%] left-[2%] h-20 w-36 -rotate-3 rounded-full opacity-17 blur-xl"
         style={{
           background:
             "linear-gradient(120deg, rgba(33,78,36,0.16) 0%, rgba(243,227,200,0.2) 58%, transparent 100%)",

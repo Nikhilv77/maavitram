@@ -7,7 +7,7 @@ import { env } from "@/lib/env";
 // reading DATABASE_URL implicitly. `@prisma/adapter-pg` is the plain
 // node-postgres adapter; it works with Neon's pooled connection string
 // as-is, no Neon-specific package needed.
-const adapter = new PrismaPg(env.DATABASE_URL);
+const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 

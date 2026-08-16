@@ -429,7 +429,7 @@ function SuccessState({
       <button
         type="button"
         onClick={onClose}
-        className="btn btn-secondary mt-7 min-h-11 w-full rounded-md text-sm sm:w-auto sm:min-w-48"
+        className="btn mt-7 min-h-11 w-full rounded-md border border-green/35 bg-transparent text-sm text-green/80 outline-none ring-0 hover:border-green/35 hover:bg-transparent hover:text-green/80 hover:outline-none hover:ring-0 focus:border-green/35 focus:text-green/80 focus:outline-none focus:ring-0 focus-visible:border-green/35 focus-visible:outline-none focus-visible:ring-0 sm:w-auto sm:min-w-48"
       >
         Continue browsing
       </button>

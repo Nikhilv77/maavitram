@@ -98,13 +98,13 @@ export const lowStockLines: LowStockLine[] = [
     stockQuantity: 3,
   },
   {
-    productName: "Maavitram Saumya",
+    productName: "Maavitram Mix Saumya",
     sku: "MAV-SAU-500",
     variantLabel: "500 g",
     stockQuantity: 6,
   },
   {
-    productName: "Maavitram Tez",
+    productName: "Maavitram Mix Tez",
     sku: "MAV-TEZ-500",
     variantLabel: "500 g",
     stockQuantity: 9,

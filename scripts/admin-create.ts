@@ -15,7 +15,9 @@ if (!databaseUrl) {
   );
 }
 
-const db = new PrismaClient({ adapter: new PrismaPg(databaseUrl) });
+const db = new PrismaClient({
+  adapter: new PrismaPg({ connectionString: databaseUrl }),
+});
 
 const BCRYPT_COST = 12;
 

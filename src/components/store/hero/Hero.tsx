@@ -11,7 +11,7 @@ import { useHeroCarousel } from "@/components/store/hero/useHeroCarousel";
 const heroCopy = {
   title: ["Rooted in Nature,", "Blended with Care"],
   description:
-    "Pure ingredients and authentic blends elevate every meal beautifully.",
+    "Pure ingredients and authentic blends bring natural aroma, rich color, and traditional warmth to every home-cooked meal.",
 } as const;
 
 /**
@@ -91,28 +91,42 @@ function HeroGradientPatches() {
       className="pointer-events-none absolute inset-y-0 left-0 z-[2] hidden w-[52%] overflow-hidden lg:block"
     >
       <span
-        className="absolute top-[10%] left-[9%] h-32 w-52 -rotate-12 rounded-full opacity-16 blur-2xl"
+        className="absolute top-[10%] left-[9%] h-32 w-52 -rotate-12 rounded-full opacity-20 blur-2xl"
         style={{
           background:
             "linear-gradient(135deg, rgba(117,128,110,0.26) 0%, rgba(243,227,200,0.2) 56%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[31%] left-[38%] h-24 w-64 rotate-6 rounded-full opacity-18 blur-2xl"
+        className="absolute top-[24%] left-[4%] h-20 w-44 rotate-2 rounded-full opacity-18 blur-xl"
+        style={{
+          background:
+            "linear-gradient(120deg, rgba(244,231,210,0.34) 0%, rgba(201,144,22,0.12) 58%, transparent 100%)",
+        }}
+      />
+      <span
+        className="absolute top-[31%] left-[38%] h-24 w-64 rotate-6 rounded-full opacity-22 blur-2xl"
         style={{
           background:
             "linear-gradient(115deg, transparent 0%, rgba(201,144,22,0.24) 42%, rgba(244,231,210,0.16) 74%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[63%] left-[12%] h-28 w-72 rotate-3 rounded-full opacity-16 blur-2xl"
+        className="absolute top-[50%] left-[32%] h-20 w-52 -rotate-3 rounded-full opacity-17 blur-xl"
+        style={{
+          background:
+            "linear-gradient(130deg, transparent 0%, rgba(243,227,200,0.3) 36%, rgba(201,144,22,0.1) 72%, transparent 100%)",
+        }}
+      />
+      <span
+        className="absolute top-[63%] left-[12%] h-28 w-72 rotate-3 rounded-full opacity-21 blur-2xl"
         style={{
           background:
             "linear-gradient(125deg, rgba(243,227,200,0.34) 0%, rgba(201,144,22,0.12) 54%, transparent 100%)",
         }}
       />
       <span
-        className="absolute top-[76%] left-[42%] h-20 w-40 -rotate-6 rounded-full opacity-12 blur-xl"
+        className="absolute top-[76%] left-[42%] h-20 w-40 -rotate-6 rounded-full opacity-15 blur-xl"
         style={{
           background:
             "linear-gradient(135deg, transparent 0%, rgba(201,144,22,0.2) 46%, rgba(243,227,200,0.14) 78%, transparent 100%)",

@@ -27,7 +27,7 @@ export const heroSlides: HeroSlide[] = [
     accent: "tez",
     image: {
       src: "/images/hero/product-1-right.png",
-      alt: "Maavitram Tez spicy masala blend surrounded by red chillies and whole spices",
+      alt: "Maavitram Mix Tez spicy masala blend surrounded by red chillies and whole spices",
     },
   },
   {
@@ -35,7 +35,7 @@ export const heroSlides: HeroSlide[] = [
     accent: "saumya",
     image: {
       src: "/images/hero/product-2-right.png",
-      alt: "Maavitram Saumya mild masala blend surrounded by green chillies and fresh herbs",
+      alt: "Maavitram Mix Saumya mild masala blend surrounded by green chillies and fresh herbs",
     },
   },
   {

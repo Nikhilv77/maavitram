@@ -1,4 +1,5 @@
 import { AboutStory } from "@/components/store/AboutStory";
+import { ContactUsSection } from "@/components/store/ContactUsSection";
 import { Hero } from "@/components/store/hero/Hero";
 import { IngredientPromise } from "@/components/store/IngredientPromise";
 import { ProductRange } from "@/components/store/products/ProductRange";
@@ -14,8 +15,9 @@ export default async function Home() {
     <main className="flex flex-1 flex-col">
       <Hero />
       <ProductRange catalogue={catalogue} />
-      <IngredientPromise />
       <AboutStory />
+      <IngredientPromise />
+      <ContactUsSection />
     </main>
   );
 }

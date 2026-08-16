@@ -33,7 +33,7 @@ interface ProductCard {
 const products: ProductCard[] = [
   {
     slug: "maavitram-tez",
-    name: "Maavitram Tez",
+    name: "Maavitram Mix Tez",
     flavor: "Spicy / तीखा",
     description: "Fiery blend for those who love bold flavours.",
     detail: {
@@ -50,14 +50,14 @@ const products: ProductCard[] = [
     },
     image: {
       src: "/images/products/1.png",
-      alt: "Maavitram Tez spicy masala pouch with red chillies and spice powder",
+      alt: "Maavitram Mix Tez spicy masala pouch with red chillies and spice powder",
       width: 1199,
       height: 1312,
     },
   },
   {
     slug: "maavitram-saumya",
-    name: "Maavitram Saumya",
+    name: "Maavitram Mix Saumya",
     flavor: "Mild / सौम्य",
     description: "Perfectly balanced blend for everyday dishes.",
     detail: {
@@ -73,7 +73,7 @@ const products: ProductCard[] = [
     },
     image: {
       src: "/images/products/2.png",
-      alt: "Maavitram Saumya mild masala pouch with green chillies and herbs",
+      alt: "Maavitram Mix Saumya mild masala pouch with green chillies and herbs",
       width: 1122,
       height: 1402,
     },

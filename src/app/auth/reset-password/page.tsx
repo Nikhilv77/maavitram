@@ -23,7 +23,7 @@ export default async function ResetPasswordPage({
   return (
     <AuthSplitLayout
       imageSrc="/images/auth/signup-visual.png"
-      imageAlt="Maavitram Saumya spice pouch styled with fresh coriander, green chillies and whole spices"
+      imageAlt="Maavitram Mix Saumya spice pouch styled with fresh coriander, green chillies and whole spices"
     >
       {valid ? (
         <>

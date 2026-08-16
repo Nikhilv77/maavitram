@@ -128,7 +128,7 @@ export function Navbar({ cartCount = 0 }: NavbarProps) {
         aria-label="Mobile"
         inert={!menuOpen}
         className={cn(
-          "absolute inset-x-0 top-full z-40 bg-background/98 backdrop-blur-md transition-[opacity,translate] duration-[var(--duration-base)] ease-out lg:hidden",
+          "store-nav absolute inset-x-0 top-full z-40 backdrop-blur-md transition-[opacity,translate] duration-[var(--duration-base)] ease-out lg:hidden",
           menuOpen
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-3 opacity-0",

@@ -34,7 +34,7 @@ export interface AdminProduct {
 export const adminProducts: AdminProduct[] = [
   {
     slug: "maavitram-tez",
-    name: "Maavitram Tez",
+    name: "Maavitram Mix Tez",
     accent: "tez",
     category: "blended_masalas",
     shortDescription: "Bold, high-heat all-purpose masala.",
@@ -49,7 +49,7 @@ export const adminProducts: AdminProduct[] = [
   },
   {
     slug: "maavitram-saumya",
-    name: "Maavitram Saumya",
+    name: "Maavitram Mix Saumya",
     accent: "saumya",
     category: "blended_masalas",
     shortDescription: "Gentle, aromatic masala for everyday cooking.",

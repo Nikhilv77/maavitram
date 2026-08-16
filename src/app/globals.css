@@ -250,7 +250,14 @@
   }
 
   .store-nav {
-    background: #fcf8f0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.45)
+      ),
+      #fcf8f0;
   }
 
   .store-hero {
@@ -258,12 +265,22 @@
     background:
       radial-gradient(
         circle at 24% 76%,
-        rgba(201, 144, 22, 0.07),
+        rgba(201, 144, 22, 0.09),
         transparent 30%
       ),
       radial-gradient(
+        ellipse at 18% 28%,
+        rgba(243, 227, 200, 0.18),
+        transparent 32%
+      ),
+      radial-gradient(
+        ellipse at 42% 58%,
+        rgba(244, 231, 210, 0.14),
+        transparent 28%
+      ),
+      radial-gradient(
         circle at 50% 86%,
-        rgba(169, 43, 32, 0.02),
+        rgba(169, 43, 32, 0.03),
         transparent 30%
       ),
       linear-gradient(90deg, #fff 0%, #fff 43%, #fbf7ef 68%, #f3e3c8 100%);
@@ -294,12 +311,17 @@
       background:
         radial-gradient(
           circle at 92% 52%,
-          rgba(201, 144, 22, 0.16),
+          rgba(201, 144, 22, 0.18),
           transparent 42%
         ),
         radial-gradient(
+          ellipse at 18% 22%,
+          rgba(243, 227, 200, 0.2),
+          transparent 38%
+        ),
+        radial-gradient(
           circle at 18% 88%,
-          rgba(169, 43, 32, 0.035),
+          rgba(169, 43, 32, 0.045),
           transparent 38%
         ),
         linear-gradient(180deg, #fffaf2 0%, #fff 38%, #fff 100%);
