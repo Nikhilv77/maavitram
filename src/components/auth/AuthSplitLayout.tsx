@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { LeafPattern } from "@/components/ui/LeafPattern";
+import { localImageSrc } from "@/config/images";
 import { siteConfig } from "@/config/site";
 
 interface AuthSplitLayoutProps {
@@ -59,7 +60,7 @@ export function AuthSplitLayout({
             enough corner rounding to avoid a hard rectangle. */}
         <div className="relative hidden aspect-[2/3] h-[min(82vh,760px)] max-w-full overflow-hidden rounded-xl lg:block">
           <Image
-            src={imageSrc}
+            src={localImageSrc(imageSrc)}
             alt={imageAlt}
             fill
             sizes="(min-width: 1024px) 520px, 0px"

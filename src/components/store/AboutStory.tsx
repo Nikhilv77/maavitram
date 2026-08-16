@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Leaf } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { RevealOnView } from "@/components/ui/RevealOnView";
+import { localImageSrc } from "@/config/images";
+import { revealStyle } from "@/lib/revealStyle";
 
 const storyStats = [
   { value: "100%", label: "Natural" },
@@ -11,14 +14,17 @@ const storyStats = [
 
 export function AboutStory() {
   return (
-    <section
+    <RevealOnView
       id="about"
       className="relative isolate scroll-mt-4 overflow-hidden bg-white"
     >
       <div className="relative lg:min-h-[540px] xl:min-h-[580px]">
-        <div className="relative h-[300px] overflow-hidden bg-[#f4e4ca] sm:h-[390px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[57%] lg:bg-transparent">
+        <div
+          style={revealStyle(0)}
+          className="reveal-section-child relative h-[300px] overflow-hidden bg-[#f4e4ca] sm:h-[390px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[57%] lg:bg-transparent"
+        >
           <Image
-            src="/images/about-us/about-us-visual.png"
+            src={localImageSrc("/images/about-us/about-us-visual.png")}
             alt="Maavitram brand story with traditional spices, herbs, mortar and chillies"
             fill
             sizes="(min-width: 1280px) 57vw, (min-width: 1024px) 57vw, 100vw"
@@ -47,18 +53,27 @@ export function AboutStory() {
         <div className="relative z-10 lg:flex lg:min-h-[540px] lg:items-center xl:min-h-[580px]">
           <Container>
             <div className="max-w-xl pt-8 pb-10 sm:py-12 lg:w-[48%] lg:max-w-[610px] lg:py-16">
-              <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-foreground/65 uppercase">
+              <p
+                style={revealStyle(1)}
+                className="reveal-section-child flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-foreground/65 uppercase"
+              >
                 <span className="h-px w-7 bg-foreground/28" />
                 Our Story
                 <Leaf className="h-3.5 w-3.5 text-green" aria-hidden="true" />
               </p>
 
-              <h2 className="mt-3 font-serif text-[2.55rem] leading-[1.04] font-semibold tracking-normal text-foreground sm:text-5xl lg:text-[3.35rem] xl:text-[3.65rem]">
+              <h2
+                style={revealStyle(2)}
+                className="reveal-section-child mt-3 font-serif text-[2.55rem] leading-[1.04] font-semibold tracking-normal text-foreground sm:text-5xl lg:text-[3.35rem] xl:text-[3.65rem]"
+              >
                 <span className="block">From Nature&apos;s Best</span>
                 <span className="block">to Your Kitchen</span>
               </h2>
 
-              <div className="mt-5 grid gap-3 text-sm leading-7 font-medium text-muted sm:text-base">
+              <div
+                style={revealStyle(3)}
+                className="reveal-section-child mt-5 grid gap-3 text-sm leading-7 font-medium text-muted sm:text-base"
+              >
                 <p>
                   At Maavitram, we believe great food begins with ingredients
                   you can trust. Our masalas are crafted from handpicked spices,
@@ -71,7 +86,10 @@ export function AboutStory() {
                 </p>
               </div>
 
-              <div className="mt-6">
+              <div
+                style={revealStyle(4)}
+                className="reveal-section-child mt-6"
+              >
                 <Link
                   href="/about"
                   className="btn btn-primary min-h-11 gap-2 rounded-md px-6 text-xs"
@@ -82,8 +100,12 @@ export function AboutStory() {
               </div>
 
               <dl className="mt-8 grid max-w-[30rem] grid-cols-3 divide-x divide-foreground/10">
-                {storyStats.map((stat) => (
-                  <div key={stat.label} className="px-4 first:pl-0 last:pr-0">
+                {storyStats.map((stat, index) => (
+                  <div
+                    key={stat.label}
+                    style={revealStyle(index + 5)}
+                    className="reveal-section-child px-4 first:pl-0 last:pr-0"
+                  >
                     <dt className="text-2xl leading-none font-semibold text-green">
                       {stat.value}
                     </dt>
@@ -97,7 +119,7 @@ export function AboutStory() {
           </Container>
         </div>
       </div>
-    </section>
+    </RevealOnView>
   );
 }
 

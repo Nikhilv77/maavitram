@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { localImageSrc } from "@/config/images";
 import { cn } from "@/lib/utils";
 import type { HeroSlide } from "@/components/store/hero/hero-slides";
 
@@ -37,7 +38,7 @@ export function HeroSlideImage({ slides, activeIndex }: HeroSlideImageProps) {
             )}
           >
             <Image
-              src={slide.image.src}
+              src={localImageSrc(slide.image.src)}
               alt={slide.image.alt}
               fill
               preload={i === 0}

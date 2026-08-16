@@ -1,5 +1,7 @@
 import { HandHeart, Leaf, ShieldCheck, Sprout } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { RevealOnView } from "@/components/ui/RevealOnView";
+import { revealStyle } from "@/lib/revealStyle";
 
 const promises = [
   {
@@ -26,34 +28,44 @@ const promises = [
 
 export function IngredientPromise() {
   return (
-    <section
+    <RevealOnView
       id="why-maavitram"
       className="relative scroll-mt-4 overflow-hidden bg-white py-12 sm:py-16 lg:py-18"
     >
       <Container>
         <div className="mx-auto max-w-3xl text-center">
-          <p className="flex items-center justify-center gap-3 text-[10px] font-semibold tracking-[0.22em] text-foreground/55 uppercase sm:text-[11px]">
+          <p
+            style={revealStyle(0)}
+            className="reveal-section-child flex items-center justify-center gap-3 text-[10px] font-semibold tracking-[0.22em] text-foreground/55 uppercase sm:text-[11px]"
+          >
             <span className="h-px w-7 bg-foreground/18" />
             Our Values
             <Leaf className="h-3.5 w-3.5 text-green" aria-hidden="true" />
           </p>
-          <h2 className="mt-3 font-serif text-3xl leading-[1.04] font-semibold text-balance text-foreground sm:text-4xl lg:text-5xl">
+          <h2
+            style={revealStyle(1)}
+            className="reveal-section-child mt-3 font-serif text-3xl leading-[1.04] font-semibold text-balance text-foreground sm:text-4xl lg:text-5xl"
+          >
             The Maavitram Promise
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 font-medium text-pretty text-muted">
+          <p
+            style={revealStyle(2)}
+            className="reveal-section-child mx-auto mt-3 max-w-xl text-sm leading-6 font-medium text-pretty text-muted"
+          >
             We don&rsquo;t just sell spices, we share our promise of purity and
             care.
           </p>
         </div>
 
         <div className="mt-9 grid gap-7 sm:grid-cols-2 lg:mt-11 lg:grid-cols-4 lg:gap-0">
-          {promises.map((promise) => {
+          {promises.map((promise, index) => {
             const Icon = promise.icon;
 
             return (
               <article
                 key={promise.title}
-                className="flex flex-col items-center text-center lg:px-8 [&:not(:first-child)]:lg:border-l [&:not(:first-child)]:lg:border-foreground/10"
+                style={revealStyle(index + 3)}
+                className="reveal-section-child flex flex-col items-center text-center lg:px-8 [&:not(:first-child)]:lg:border-l [&:not(:first-child)]:lg:border-foreground/10"
               >
                 <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green/[0.07] text-green sm:h-18 sm:w-18">
                   <Icon className="h-8 w-8 stroke-[1.65]" aria-hidden="true" />
@@ -69,6 +81,6 @@ export function IngredientPromise() {
           })}
         </div>
       </Container>
-    </section>
+    </RevealOnView>
   );
 }

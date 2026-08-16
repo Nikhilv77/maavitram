@@ -2,10 +2,12 @@ import Link from "next/link";
 import { ArrowRight, Check, Mail, MessageCircle } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { LeafPattern } from "@/components/ui/LeafPattern";
+import { RevealOnView } from "@/components/ui/RevealOnView";
 import { FacebookIcon, InstagramIcon } from "@/components/store/SocialIcons";
 import { FooterShopLinks } from "@/components/store/FooterShopLinks";
 import { buildWhatsAppLink } from "@/features/whatsapp/lib/link";
 import { siteConfig } from "@/config/site";
+import { revealStyle } from "@/lib/revealStyle";
 
 // Anchors, not routes — the storefront is a single page today, and the
 // old /shop, /about, /why-maavitram, /recipes and /contact hrefs all 404'd.
@@ -49,7 +51,10 @@ const contactEmail = "maavigram.info@gmail.com";
 
 export function StoreFooter() {
   return (
-    <footer className="relative overflow-hidden bg-[#fcf8f0] text-foreground">
+    <RevealOnView
+      as="footer"
+      className="relative overflow-hidden bg-[#fcf8f0] text-foreground"
+    >
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/45"
@@ -61,7 +66,7 @@ export function StoreFooter() {
 
       <Container className="relative z-10 py-9 sm:py-10 lg:py-12">
         <div className="grid gap-8 lg:grid-cols-[1fr_2.45fr_1.15fr] lg:gap-10">
-          <div>
+          <div style={revealStyle(0)} className="reveal-section-child">
             <Link href="/" className="inline-flex flex-col">
               <span className="font-serif text-3xl leading-none font-semibold tracking-[0.08em] text-green sm:text-4xl">
                 MAAVITRAM
@@ -95,12 +100,21 @@ export function StoreFooter() {
           </div>
 
           <div className="grid gap-7 sm:grid-cols-3 sm:gap-8">
-            <FooterLinkColumn title="Quick Links" links={quickLinks} />
-            <FooterPromiseColumn />
-            <FooterShopLinks />
+            <div style={revealStyle(1)} className="reveal-section-child">
+              <FooterLinkColumn title="Quick Links" links={quickLinks} />
+            </div>
+            <div style={revealStyle(2)} className="reveal-section-child">
+              <FooterPromiseColumn />
+            </div>
+            <div style={revealStyle(3)} className="reveal-section-child">
+              <FooterShopLinks />
+            </div>
           </div>
 
-          <div className="border-t border-foreground/10 pt-7 sm:border-t-0 sm:pt-0 lg:border-l lg:pl-8">
+          <div
+            style={revealStyle(4)}
+            className="reveal-section-child border-t border-foreground/10 pt-7 sm:border-t-0 sm:pt-0 lg:border-l lg:pl-8"
+          >
             <div className="flex items-center gap-2 text-sm font-semibold text-green">
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
               Get in Touch
@@ -131,11 +145,14 @@ export function StoreFooter() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-foreground/10 pt-5 text-center text-sm text-muted">
+        <div
+          style={revealStyle(5)}
+          className="reveal-section-child mt-8 border-t border-foreground/10 pt-5 text-center text-sm text-muted"
+        >
           &copy; 2026 {siteConfig.name}. All rights reserved.
         </div>
       </Container>
-    </footer>
+    </RevealOnView>
   );
 }
 

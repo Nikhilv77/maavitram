@@ -36,7 +36,10 @@ export function Hero() {
       <HeroGradientPatches />
 
       <div className="relative lg:min-h-[470px] xl:min-h-[500px]">
-        <div className="relative h-[295px] overflow-hidden bg-[#f3e3c8] sm:h-[390px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[55%] lg:bg-transparent">
+        <div
+          style={{ "--reveal-index": 0 } as React.CSSProperties}
+          className="hero-fade relative h-[295px] overflow-hidden bg-[#f3e3c8] sm:h-[390px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[55%] lg:bg-transparent"
+        >
           <HeroSlideImage slides={heroSlides} activeIndex={index} />
           <div
             aria-hidden="true"
@@ -47,23 +50,35 @@ export function Hero() {
         <div className="relative z-10 lg:flex lg:min-h-[470px] lg:items-center xl:min-h-[500px]">
           <Container>
             <div className="max-w-xl pt-7 pb-8 sm:py-10 lg:w-[50%] lg:max-w-[660px] lg:py-14">
-              <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-foreground/70 uppercase">
+              <p
+                style={{ "--reveal-index": 1 } as React.CSSProperties}
+                className="hero-reveal flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-foreground/70 uppercase"
+              >
                 <span className="h-px w-7 bg-foreground/30" />
                 Pure spices. Timeless recipes.
                 <Leaf className="h-3.5 w-3.5 text-green" aria-hidden="true" />
               </p>
-              <h1 className="mt-3 min-h-[2.08em] font-serif text-[2.65rem] leading-[1.04] font-semibold tracking-normal text-foreground sm:text-5xl lg:text-[3.55rem] xl:text-[3.9rem]">
+              <h1
+                style={{ "--reveal-index": 2 } as React.CSSProperties}
+                className="hero-reveal mt-3 min-h-[2.08em] font-serif text-[2.65rem] leading-[1.04] font-semibold tracking-normal text-foreground sm:text-5xl lg:text-[3.55rem] xl:text-[3.9rem]"
+              >
                 {heroCopy.title.map((line) => (
                   <span key={line} className="block sm:text-nowrap">
                     {line}
                   </span>
                 ))}
               </h1>
-              <p className="mt-4 min-h-12 max-w-sm text-sm leading-7 font-medium text-muted sm:text-base">
+              <p
+                style={{ "--reveal-index": 3 } as React.CSSProperties}
+                className="hero-reveal mt-4 min-h-12 max-w-sm text-sm leading-7 font-medium text-muted sm:text-base"
+              >
                 {heroCopy.description}
               </p>
 
-              <div className="mt-6">
+              <div
+                style={{ "--reveal-index": 4 } as React.CSSProperties}
+                className="hero-reveal mt-6"
+              >
                 <Link
                   href="/shop"
                   className="btn btn-primary min-h-11 gap-2 rounded-md px-6 text-xs shadow-sm"
@@ -73,7 +88,10 @@ export function Hero() {
                 </Link>
               </div>
 
-              <div className="mt-7">
+              <div
+                style={{ "--reveal-index": 5 } as React.CSSProperties}
+                className="hero-reveal mt-7"
+              >
                 <TrustPoints />
               </div>
             </div>
