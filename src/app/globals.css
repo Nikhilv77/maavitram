@@ -16,6 +16,13 @@
   --lal-tadka: #8f1916;
   --border: rgba(42, 54, 38, 0.12);
 
+  /* Scrollbar. Tinted with the foreground rather than a neutral grey so
+     the thumb reads as part of the warm palette. */
+  --scrollbar-track: rgba(252, 248, 240, 0.82);
+  --scrollbar-thumb: rgba(33, 78, 36, 0.34);
+  --scrollbar-thumb-hover: rgba(33, 78, 36, 0.54);
+  --scrollbar-thumb-active: rgba(201, 144, 22, 0.72);
+
   /* Layout */
   --container-max: 1440px;
 
@@ -28,6 +35,26 @@
   /* Motion */
   --transition-fast: 150ms ease;
   --transition-base: 220ms ease;
+  /* Larger content transitions (e.g. hero crossfade) — same family, just
+     unhurried enough not to feel like a UI micro-interaction. */
+  --transition-slow: 700ms ease;
+  /* Duration-only companions for Tailwind's `duration-[...]` utility,
+     which sets the longhand `transition-duration` — a bare <time>, unlike
+     the shorthand-ready tokens above (`220ms ease` is invalid there and
+     silently resolves to 0s, i.e. no animation at all). Use these with
+     `duration-[...]`; use the tokens above inside a `transition:`
+     shorthand (see .btn below). */
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --duration-slow: 700ms;
+
+  /* Card elevation. Tinted with the foreground green-black rather than
+     pure black, so cards lift off the cream background without the grey
+     cast a neutral shadow leaves on a warm palette. */
+  --shadow-card:
+    0 1px 2px rgba(31, 39, 29, 0.04), 0 4px 16px -6px rgba(31, 39, 29, 0.07);
+  --shadow-card-hover:
+    0 2px 4px rgba(31, 39, 29, 0.05), 0 14px 30px -10px rgba(31, 39, 29, 0.12);
 }
 
 @theme inline {
@@ -46,6 +73,7 @@
   --color-border: var(--border);
 
   --font-sans: var(--font-raleway), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-eb-garamond), ui-serif, Georgia, serif;
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
@@ -65,101 +93,352 @@
   --text-6xl: clamp(3.25rem, 2.5rem + 3.75vw, 4.5rem);
 }
 
-* {
-  border-color: var(--border);
+/*
+ * Everything below is wrapped in Tailwind's `base`/`components` layers
+ * (rather than left unlayered) so it keeps its intended priority: cascade
+ * layers rank an *entire* layer before specificity is ever compared, and
+ * Tailwind's own utilities always live in `@layer utilities` — the layer
+ * declared last, i.e. highest priority. Unlayered CSS beats every layer
+ * unconditionally, so e.g. an unlayered `a { color: inherit; }` would
+ * silently out-rank `text-foreground/70` (or any other utility) on every
+ * <a>, no matter how specific the utility looks.
+ */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    color-scheme: light;
+    /* Standard properties — Firefox, and Chrome 121+. Set on the root so
+       they inherit into every nested scroll container (the orders table,
+       the sidebar nav, …), which is what makes this app-wide. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  /*
+   * WebKit fallback for browsers without the standard properties above
+   * (Safari, older Chrome). Modern Chrome ignores these entirely once
+   * `scrollbar-color` is set, so the two are alternatives, not layers —
+   * they're tuned to the same colour to look identical either way.
+   *
+   * The transparent border + `background-clip: padding-box` is what
+   * makes the thumb float with breathing room instead of filling the
+   * full gutter edge to edge.
+   */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: var(--scrollbar-thumb-active);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: var(--scrollbar-track);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings:
+      "liga" 1,
+      "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  /* Consistent, accessible focus states */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--foreground);
+  }
 }
 
-html {
-  color-scheme: light;
+@layer components {
+  /* Responsive content container, capped at 1440px */
+  .container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  /* Premium green primary button */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.5rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast),
+      transform var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: var(--surface);
+    border: 1px solid var(--green);
+  }
+
+  .btn-primary:hover {
+    background: var(--green-dark);
+    border-color: var(--green-dark);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--green);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface);
+    border-color: var(--green);
+  }
+
+  .store-nav {
+    background: #fcf8f0;
+  }
+
+  .store-hero {
+    isolation: isolate;
+    background:
+      radial-gradient(
+        circle at 24% 76%,
+        rgba(201, 144, 22, 0.07),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 50% 86%,
+        rgba(169, 43, 32, 0.02),
+        transparent 30%
+      ),
+      linear-gradient(90deg, #fff 0%, #fff 43%, #fbf7ef 68%, #f3e3c8 100%);
+  }
+
+  .store-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      #fff 0%,
+      #fff 39%,
+      rgba(255, 255, 255, 0.84) 47%,
+      rgba(255, 255, 255, 0.18) 55%,
+      transparent 63%
+    );
+  }
+
+  .hero-copy-wash {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    .store-hero {
+      background:
+        radial-gradient(
+          circle at 92% 52%,
+          rgba(201, 144, 22, 0.16),
+          transparent 42%
+        ),
+        radial-gradient(
+          circle at 18% 88%,
+          rgba(169, 43, 32, 0.035),
+          transparent 38%
+        ),
+        linear-gradient(180deg, #fffaf2 0%, #fff 38%, #fff 100%);
+    }
+
+    .store-hero::before {
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 48%,
+        rgba(255, 255, 255, 0.08) 53%,
+        rgba(255, 255, 255, 0.76) 59%,
+        #fff 100%
+      );
+    }
+  }
+
+  .hero-slide-artwork {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-copy-wash {
+      position: absolute;
+      inset: 0 auto 0 0;
+      z-index: 2;
+      display: block;
+      width: min(42rem, 47vw);
+      pointer-events: none;
+      background: radial-gradient(
+        circle at 30% 76%,
+        rgba(201, 144, 22, 0.07),
+        transparent 34%
+      );
+    }
+
+    .hero-slide-artwork {
+      -webkit-mask-image:
+        linear-gradient(
+          to right,
+          transparent 0%,
+          rgba(0, 0, 0, 0) 6%,
+          rgba(0, 0, 0, 0.42) 16%,
+          rgba(0, 0, 0, 0.86) 28%,
+          black 38%
+        ),
+        linear-gradient(to bottom, black 0%, black 84%, transparent 100%);
+      mask-image:
+        linear-gradient(
+          to right,
+          transparent 0%,
+          rgba(0, 0, 0, 0) 6%,
+          rgba(0, 0, 0, 0.42) 16%,
+          rgba(0, 0, 0, 0.86) 28%,
+          black 38%
+        ),
+        linear-gradient(to bottom, black 0%, black 84%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  font-feature-settings:
-    "liga" 1,
-    "kern" 1;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+/*
+ * Dashboard entrance motion.
+ *
+ * Every keyframe animates only `opacity` and `transform` — both are
+ * composited off the main thread, so these stay smooth on mobile and
+ * never trigger layout. (Animating `height`/`width` on the chart bars
+ * and progress bars would reflow the page on every frame instead.)
+ *
+ * `both` fill-mode matters: it holds the "from" state during the
+ * stagger delay, otherwise a card would flash at full opacity before
+ * its animation starts.
+ */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-a {
-  color: inherit;
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
 }
 
-/* Responsive content container, capped at 1440px */
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 3rem);
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
-/* Consistent, accessible focus states */
-:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
-}
+@layer utilities {
+  .animate-rise-in {
+    animation: rise-in var(--duration-slow) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 
-/* Premium green primary button */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: var(--radius-md);
-  padding: 0.75rem 1.5rem;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  transition:
-    background-color var(--transition-fast),
-    border-color var(--transition-fast),
-    color var(--transition-fast),
-    transform var(--transition-fast);
-  cursor: pointer;
-}
+  .animate-fade-in {
+    animation: fade-in var(--duration-base) ease-out both;
+  }
 
-.btn:active {
-  transform: translateY(1px);
-}
+  .animate-grow-y {
+    animation: grow-y var(--duration-slow) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 
-.btn-primary {
-  background: var(--green);
-  color: var(--surface);
-  border: 1px solid var(--green);
-}
+  .animate-grow-x {
+    animation: grow-x var(--duration-slow) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 
-.btn-primary:hover {
-  background: var(--green-dark);
-  border-color: var(--green-dark);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--green);
-  border: 1px solid var(--border);
-}
-
-.btn-secondary:hover {
-  background: var(--surface);
-  border-color: var(--green);
-}
-
-::selection {
-  background: var(--gold);
-  color: var(--foreground);
+  /* Same layer, declared last, so it wins without needing to sit
+     unlayered (which would out-rank every utility on the page). */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-rise-in,
+    .animate-fade-in,
+    .animate-grow-y,
+    .animate-grow-x {
+      animation: none;
+    }
+  }
 }

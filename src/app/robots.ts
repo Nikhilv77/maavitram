@@ -6,8 +6,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Admin console and JSON API routes aren't content — keep crawlers out.
-      disallow: ["/admin", "/api"],
+      // Admin console, auth pages, and JSON API routes aren't content —
+      // keep crawlers out.
+      disallow: ["/admin", "/auth", "/api"],
     },
     sitemap: `${siteConfig.url}/sitemap.xml`,
   };

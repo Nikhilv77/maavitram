@@ -1,16 +1,21 @@
-import { Container } from "@/components/ui/Container";
+import { AboutStory } from "@/components/store/AboutStory";
+import { Hero } from "@/components/store/hero/Hero";
+import { IngredientPromise } from "@/components/store/IngredientPromise";
+import { ProductRange } from "@/components/store/products/ProductRange";
+import { getPreorderCatalogue } from "@/features/products/lib/queries";
 
-export default function Home() {
+export default async function Home() {
+  // Fetched here rather than inside ProductRange: that component is a
+  // Client Component (it owns the modal state), so the real variant ids
+  // and prices have to be handed in from the server.
+  const catalogue = await getPreorderCatalogue();
+
   return (
-    <main className="flex flex-1 items-center justify-center">
-      <Container className="flex flex-col items-center gap-4 py-24 text-center">
-        <h1 className="text-4xl font-semibold tracking-tight text-green sm:text-5xl">
-          MAAVITRAM
-        </h1>
-        <p className="text-lg text-muted">
-          Rooted in Nature, Blended with Care.
-        </p>
-      </Container>
+    <main className="flex flex-1 flex-col">
+      <Hero />
+      <ProductRange catalogue={catalogue} />
+      <IngredientPromise />
+      <AboutStory />
     </main>
   );
 }

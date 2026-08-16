@@ -7,9 +7,17 @@ const envSchema = z.object({
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required — set it in .env (see .env.example)"),
+  // Signs/verifies the Auth.js session JWT. Generate with `openssl rand
+  // -base64 32` — never reuse across environments.
+  AUTH_SECRET: z
+    .string()
+    .min(1, "AUTH_SECRET is required — set it in .env (see .env.example)"),
 });
 
-const parsed = envSchema.safeParse({ DATABASE_URL: process.env.DATABASE_URL });
+const parsed = envSchema.safeParse({
+  DATABASE_URL: process.env.DATABASE_URL,
+  AUTH_SECRET: process.env.AUTH_SECRET,
+});
 
 if (!parsed.success) {
   const issues = parsed.error.issues

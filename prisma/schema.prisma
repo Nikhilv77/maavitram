@@ -16,11 +16,50 @@ enum ProductCategory {
   seasonings
 }
 
+// Exactly one row ever — there is a single admin, not a multi-user/role
+// system. Enforced at the application layer (scripts/admin-create.ts
+// refuses to run if one already exists), not by a DB constraint, since
+// Postgres has no native "at most one row" check.
+model AdminUser {
+  id           String               @id @default(cuid())
+  email        String               @unique
+  passwordHash String
+  resetTokens  PasswordResetToken[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+}
+
+// Password reset links. Only the SHA-256 hash of the token is stored —
+// the raw value exists solely in the email, so a database leak can't be
+// replayed into an account takeover. Single-use via `usedAt`, and the
+// request flow deletes any earlier unused tokens so only the newest link
+// works.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([adminId])
+}
+
 enum OrderStatus {
   pending
   confirmed
   fulfilled
   cancelled
+}
+
+// How the order reached us. `preorder` rows come from the storefront
+// reservation modal before a batch exists; `standard` is the normal
+// WhatsApp flow. Kept as an enum rather than a boolean so a third
+// channel can be added without another migration.
+enum OrderType {
+  standard
+  preorder
 }
 
 // Product → ProductVariant (SKU/weight/price) → Inventory (stock).
@@ -74,12 +113,19 @@ model Order {
   id            String      @id @default(cuid())
   customerName  String
   customerPhone String
+  // Optional on preorders — we reach out on WhatsApp first, email is a
+  // convenience the customer can leave if they prefer it.
+  customerEmail String?
   address       String?
   notes         String?
   totalAmount   Int
+  orderType     OrderType   @default(standard)
   status        OrderStatus @default(pending)
   items         OrderItem[]
   createdAt     DateTime    @default(now())
+
+  // The admin queue reads "newest preorders still pending" on every load.
+  @@index([orderType, status, createdAt])
 }
 
 model OrderItem {

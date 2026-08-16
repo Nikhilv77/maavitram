@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
-import { Raleway } from "next/font/google";
+import { EB_Garamond, Raleway } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/config/site";
 import { getOrganizationJsonLd, seoConfig } from "@/config/seo";
 import "./globals.css";
 
 const raleway = Raleway({
   variable: "--font-raleway",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+// Display serif for premium accents (e.g. product/brand headings) -
+// exposed as the `font-serif` utility, see globals.css `@theme inline`.
+const ebGaramond = EB_Garamond({
+  variable: "--font-eb-garamond",
   subsets: ["latin"],
   display: "swap",
 });
@@ -72,18 +82,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const organizationJsonLd = getOrganizationJsonLd();
 
   return (
-    <html lang="en" className={`${raleway.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${raleway.variable} ${ebGaramond.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd).replace(
-              /</g,
-              "\\u003c",
-            ),
+            __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
           }}
         />
         {children}
+
+        {/* Vercel Web Analytics + Speed Insights. Both are no-ops off
+            Vercel, so local dev at :999 is unaffected — they only begin
+            reporting once the corresponding tab is enabled in the Vercel
+            dashboard. Mounted here so every route in both the (store) and
+            admin trees is covered from one place. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
