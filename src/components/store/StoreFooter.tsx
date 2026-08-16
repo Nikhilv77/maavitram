@@ -1,36 +1,35 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight, Check, Mail, MessageCircle } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { LeafPattern } from "@/components/ui/LeafPattern";
 import { FacebookIcon, InstagramIcon } from "@/components/store/SocialIcons";
+import { FooterShopLinks } from "@/components/store/FooterShopLinks";
 import { buildWhatsAppLink } from "@/features/whatsapp/lib/link";
 import { siteConfig } from "@/config/site";
 
+// Anchors, not routes — the storefront is a single page today, and the
+// old /shop, /about, /why-maavitram, /recipes and /contact hrefs all 404'd.
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "Shop", href: "/shop" },
-  { label: "About Us", href: "/about" },
-  { label: "Why Maavitram", href: "/why-maavitram" },
-  { label: "Recipes", href: "/recipes" },
-  { label: "Contact", href: "/contact" },
+  { label: "Shop", href: "/#products" },
+  { label: "About Us", href: "/#about" },
+  { label: "Why Maavitram", href: "/#why-maavitram" },
+  { label: "Contact", href: "/#contact" },
 ] as const;
 
-const careLinks = [
-  { label: "Shipping & Delivery", href: "/shipping" },
-  { label: "Returns & Refunds", href: "/returns" },
-  { label: "FAQs", href: "/faqs" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms & Conditions", href: "/terms" },
-] as const;
-
-const shopLinks = [
-  { label: "Maavitram Mix Tez", href: "/shop/maavitram-tez" },
-  { label: "Maavitram Mix Saumya", href: "/shop/maavitram-saumya" },
-  {
-    label: "Maavitram Achaari Virasat",
-    href: "/shop/maavitram-achaari-virasat",
-  },
-  { label: "Maavitram Lal Tadka", href: "/shop/maavitram-lal-tadka" },
+/**
+ * Replaces the old "Customer Care" column. Those five links (Shipping,
+ * Returns, FAQs, Privacy, Terms) all pointed at pages that don't exist,
+ * and there's no policy content to link to yet — so the column now
+ * carries statements instead of navigation, keeping the three-column
+ * balance without promising pages that aren't there.
+ */
+const promises = [
+  "Stone-ground blends",
+  "No added colour",
+  "Sourced from farms",
+  "Packed fresh",
+  "Trusted Recipes",
 ] as const;
 
 const socialLinks = [
@@ -46,6 +45,7 @@ const socialLinks = [
 const contactHref = buildWhatsAppLink(
   "Hi Maavitram, I would like to get in touch.",
 );
+const contactEmail = "maavigram.info@gmail.com";
 
 export function StoreFooter() {
   return (
@@ -96,8 +96,8 @@ export function StoreFooter() {
 
           <div className="grid gap-7 sm:grid-cols-3 sm:gap-8">
             <FooterLinkColumn title="Quick Links" links={quickLinks} />
-            <FooterLinkColumn title="Customer Care" links={careLinks} />
-            <FooterLinkColumn title="Shop" links={shopLinks} />
+            <FooterPromiseColumn />
+            <FooterShopLinks />
           </div>
 
           <div className="border-t border-foreground/10 pt-7 sm:border-t-0 sm:pt-0 lg:border-l lg:pl-8">
@@ -110,6 +110,14 @@ export function StoreFooter() {
               Questions about our masalas, orders, or availability? We&rsquo;re
               just a message away.
             </p>
+
+            <a
+              href={`mailto:${contactEmail}`}
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-foreground/64 transition-colors duration-[var(--duration-fast)] hover:text-green"
+            >
+              <Mail className="h-4 w-4 text-green/75" aria-hidden="true" />
+              {contactEmail}
+            </a>
 
             <a
               href={contactHref}
@@ -128,6 +136,30 @@ export function StoreFooter() {
         </div>
       </Container>
     </footer>
+  );
+}
+
+function FooterPromiseColumn() {
+  return (
+    <section aria-labelledby="footer-promise-title">
+      <h2 id="footer-promise-title" className="text-sm font-semibold text-green">
+        Our Promise
+      </h2>
+      <ul className="mt-3.5 grid gap-2.5">
+        {promises.map((promise) => (
+          <li
+            key={promise}
+            className="flex items-start gap-2 text-sm leading-5 font-medium text-foreground/62"
+          >
+            <Check
+              className="mt-0.5 h-3.5 w-3.5 shrink-0 text-green/70"
+              aria-hidden="true"
+            />
+            {promise}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

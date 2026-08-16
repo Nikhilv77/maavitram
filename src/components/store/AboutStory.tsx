@@ -11,7 +11,10 @@ const storyStats = [
 
 export function AboutStory() {
   return (
-    <section className="relative isolate overflow-hidden bg-white">
+    <section
+      id="about"
+      className="relative isolate scroll-mt-4 overflow-hidden bg-white"
+    >
       <div className="relative lg:min-h-[540px] xl:min-h-[580px]">
         <div className="relative h-[300px] overflow-hidden bg-[#f4e4ca] sm:h-[390px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[57%] lg:bg-transparent">
           <Image

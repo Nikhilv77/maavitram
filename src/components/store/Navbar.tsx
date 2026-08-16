@@ -3,19 +3,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MessagesSquare } from "lucide-react";
 import { useState } from "react";
-import { Search, ShoppingCart } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { buildWhatsAppLink } from "@/features/whatsapp/lib/link";
 import { storeNav } from "@/config/nav";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-interface NavbarProps {
-  /** Items currently in the cart. Badge is omitted entirely at 0. */
-  cartCount?: number;
-}
 
 const transition = "transition-colors duration-[var(--duration-fast)]";
+
+// Number comes from NEXT_PUBLIC_WHATSAPP_NUMBER via siteConfig — this is
+// the default recipient of buildWhatsAppLink. The message differs from the
+// footer's so it's clear in WhatsApp which surface someone came from.
+const whatsAppHref = buildWhatsAppLink(
+  "Hi Maavitram, I'd like to know more about your masalas.",
+);
 
 const iconButtonClass = cn(
   "inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-foreground/65 sm:h-9 sm:w-9",
@@ -28,7 +32,7 @@ const iconButtonClass = cn(
  * Client component — needs the mobile menu's open state and the active
  * route (for link highlighting).
  */
-export function Navbar({ cartCount = 0 }: NavbarProps) {
+export function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -73,20 +77,15 @@ export function Navbar({ cartCount = 0 }: NavbarProps) {
         </nav>
 
         <div className="flex items-center justify-end gap-0.5 sm:gap-2">
-          <button type="button" aria-label="Search" className={iconButtonClass}>
-            <Search className="h-5 w-5" />
-          </button>
-
-          <Link href="/cart" aria-label="Cart" className={iconButtonClass}>
-            <span className="relative inline-flex">
-              <ShoppingCart className="h-5 w-5" />
-              {cartCount > 0 ? (
-                <span className="absolute -top-2 -right-2 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-gold px-1 text-[10px] leading-none font-semibold text-foreground">
-                  {cartCount > 9 ? "9+" : cartCount}
-                </span>
-              ) : null}
-            </span>
-          </Link>
+          <a
+            href={whatsAppHref}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Chat with us on WhatsApp"
+            className={iconButtonClass}
+          >
+            <MessagesSquare className="h-5 w-5" aria-hidden="true" />
+          </a>
 
           <button
             type="button"

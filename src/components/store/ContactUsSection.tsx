@@ -9,7 +9,10 @@ const whatsappHref = buildWhatsAppLink(
 
 export function ContactUsSection() {
   return (
-    <section className="relative overflow-hidden bg-white pb-12 sm:pb-16 lg:pb-18">
+    <section
+      id="contact"
+      className="relative scroll-mt-4 overflow-hidden bg-white pb-12 sm:pb-16 lg:pb-18"
+    >
       <Container>
         <div className="relative isolate overflow-hidden rounded-md bg-[#fffefa]">
           <div

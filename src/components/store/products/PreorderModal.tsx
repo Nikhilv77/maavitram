@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { useActionState, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Check, Loader2, PartyPopper, X, ArrowRight } from "lucide-react";
 import { LeafPattern } from "@/components/ui/LeafPattern";
 import { QuantityStepper } from "@/components/ui/QuantityStepper";
 import { productImageSrc } from "@/config/images";
-import { formatPrice } from "@/features/products/lib/pricing";
 import {
   submitPreorder,
   type PreorderActionState,
@@ -32,7 +32,7 @@ interface PreorderModalProps {
 const initialState: PreorderActionState = {};
 
 const fieldClass =
-  "h-11 w-full rounded-md border border-foreground/12 bg-white px-3 text-sm text-foreground placeholder:text-muted/60 transition-colors duration-[var(--duration-fast)] outline-none focus:border-foreground/12 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0";
+  "h-11 w-full rounded-md border border-black/[0.10] bg-white px-3 text-sm text-foreground placeholder:text-muted/60 transition-colors duration-[var(--duration-fast)] outline-none hover:border-black/[0.18] focus:border-green/45 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0";
 
 export function PreorderModal({
   product,
@@ -49,11 +49,6 @@ export function PreorderModal({
   const titleId = useId();
   const patternId = useId();
 
-  const selectedVariant =
-    variants.find((variant) => variant.id === variantId) ?? variants[0];
-
-  const lineTotal = selectedVariant ? selectedVariant.price * quantity : 0;
-
   useEffect(() => {
     const panel = panelRef.current;
     if (!panel) return;
@@ -67,12 +62,13 @@ export function PreorderModal({
 
     focusables()[0]?.focus();
 
+    // Escape is deliberately NOT handled here — ProductModalProvider owns
+    // it for the whole stack. Handling it in both places closed two
+    // layers on one keypress: keydown is a discrete event, so React
+    // flushes this modal's close synchronously before the event finishes
+    // bubbling, and the provider's listener then saw an already-empty
+    // preorder state and closed the details sheet underneath as well.
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-        return;
-      }
-
       if (event.key !== "Tab") return;
 
       const items = focusables();
@@ -97,7 +93,15 @@ export function PreorderModal({
     };
   }, [onClose, state.reserved]);
 
-  return (
+  // Rendered into <body> so the sheet can't be clipped or re-stacked by
+  // an ancestor — a `transform`, `filter` or `overflow: hidden` anywhere
+  // up the storefront tree traps a `position: fixed` overlay inside it.
+  // A `typeof document` guard rather than a mounted flag: the modal only
+  // mounts from a click, so `document` exists by then, and this avoids a
+  // setState-in-effect round trip just to render nothing on the server.
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <div
       role="presentation"
       className="animate-fade-in fixed inset-0 z-[90] flex items-end justify-center bg-black/30 p-3 backdrop-blur-[3px] sm:items-center sm:p-6"
@@ -112,21 +116,21 @@ export function PreorderModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="animate-rise-in relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-black/[0.06] bg-white shadow-[0_24px_80px_rgba(0,0,0,0.16)]"
+        className="animate-modal-in scrollbar-none relative max-h-[92vh] w-full max-w-[46rem] overflow-y-auto rounded-xl bg-white shadow-[0_24px_80px_rgba(0,0,0,0.16)]"
       >
         {/* Close */}
         <button
           type="button"
           aria-label="Close preorder form"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-black/[0.06] bg-white/95 text-foreground/50 shadow-sm backdrop-blur transition-colors hover:text-green"
+          className="absolute top-4 right-4 z-20 flex h-9 w-9 cursor-pointer items-center justify-center text-foreground/45 transition-colors duration-[var(--duration-fast)] hover:text-green"
         >
           <X className="h-4.5 w-4.5" aria-hidden="true" />
         </button>
 
         {/* Product Visual */}
         <div
-          className="relative flex h-[15rem] items-end justify-center overflow-hidden rounded-t-xl border-b border-black/[0.05] sm:h-[18rem]"
+          className="relative flex h-[15rem] items-end justify-center overflow-hidden rounded-t-xl sm:h-[18rem]"
           style={{
             background:
               "radial-gradient(circle at 50% 95%, color-mix(in srgb, var(--product-accent) 9%, transparent), transparent 56%), #fffefa",
@@ -177,7 +181,7 @@ export function PreorderModal({
             <div className="my-7 h-px bg-black/[0.06]" />
 
             {variants.length === 0 ? (
-              <div className="rounded-xl border border-gold/20 bg-gold/[0.06] px-4 py-4">
+              <div className="rounded-xl bg-gold/[0.07] px-4 py-4">
                 <p className="text-sm leading-6 text-achaari">
                   This blend isn&rsquo;t open for reservations yet. Please check
                   back shortly.
@@ -189,33 +193,18 @@ export function PreorderModal({
                 <input type="hidden" name="quantity" value={quantity} />
 
                 {/* Product Summary */}
-                <div className="rounded-xl border border-black/[0.06] bg-[#fdfcf9] p-5">
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <p className="text-base font-semibold text-foreground">
-                        {product.name}
-                      </p>
-
-                      <p className="mt-1 text-xs text-muted">
-                        {product.flavor}
-                      </p>
-                    </div>
-
-                    <div className="text-right">
-                      <span className="block text-[10px] font-semibold tracking-[0.16em] text-foreground/40 uppercase">
-                        Total
-                      </span>
-
-                      <span className="mt-1 block text-xl font-semibold text-foreground tabular-nums">
-                        {formatPrice(lineTotal)}
-                      </span>
-                    </div>
+                <div className="rounded-xl bg-[#fffefa] p-5">
+                  <div>
+                    <p className="text-base font-semibold text-foreground">
+                      {product.name}
+                    </p>
+                    <p className="mt-1 text-xs text-muted">{product.flavor}</p>
                   </div>
 
                   {/* Variant */}
                   <fieldset className="mt-5">
                     <legend className="text-[10px] font-semibold tracking-[0.18em] text-foreground/45 uppercase">
-                      Choose Pack Size
+                      How much quantity do you want?
                     </legend>
 
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -226,31 +215,31 @@ export function PreorderModal({
                           onClick={() => setVariantId(variant.id)}
                           aria-pressed={variant.id === variantId}
                           className={cn(
-                            "cursor-pointer rounded-lg border px-4 py-2.5 text-xs font-medium",
+                            "cursor-pointer rounded-lg px-4 py-2.5 text-xs font-medium",
                             "transition-colors duration-[var(--duration-fast)]",
                             variant.id === variantId
-                              ? "border-green bg-green/[0.07] text-green-dark"
-                              : "border-black/[0.07] bg-white text-foreground/60 hover:border-green/30 hover:text-green",
+                              ? "bg-green/[0.10] text-green-dark"
+                              : "bg-white text-foreground/60 hover:text-green",
                           )}
                         >
                           {variant.label}
-
-                          <span className="ml-2 tabular-nums opacity-65">
-                            {formatPrice(variant.price)}
-                          </span>
                         </button>
                       ))}
                     </div>
                   </fieldset>
 
                   {/* Quantity */}
-                  <div className="mt-5 border-t border-black/[0.06] pt-5">
+                  <div className="mt-5">
+                    <p className="mb-3 text-[10px] font-semibold tracking-[0.18em] text-foreground/45 uppercase">
+                      Number of packs
+                    </p>
                     <QuantityStepper
                       value={quantity}
                       onChange={setQuantity}
                       min={1}
                       max={MAX_PREORDER_QUANTITY}
                       label="Quantity"
+                      className="bg-white"
                     />
 
                     {state.fieldErrors?.quantity ? (
@@ -310,7 +299,7 @@ export function PreorderModal({
                 {state.error ? (
                   <p
                     role="alert"
-                    className="rounded-lg border border-red/10 bg-red/[0.04] px-4 py-3 text-sm text-red"
+                    className="rounded-lg bg-red/[0.06] px-4 py-3 text-sm text-red"
                   >
                     {state.error}
                   </p>
@@ -349,9 +338,11 @@ export function PreorderModal({
           </div>
         )}
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 }
+
 interface FieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;

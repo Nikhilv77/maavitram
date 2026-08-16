@@ -13,13 +13,21 @@ export interface NavItem {
   href: string;
 }
 
+/**
+ * Storefront nav.
+ *
+ * Every entry points at a section that actually exists on the homepage —
+ * the site is a single page today, so these are in-page anchors rather
+ * than routes. "Recipes" was dropped along with the old /shop, /about,
+ * /why-maavitram and /contact routes: none of them were ever built, so
+ * they 404'd.
+ */
 export const storeNav: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Shop", href: "/shop" },
-  { label: "About Us", href: "/about" },
-  { label: "Why Maavitram", href: "/why-maavitram" },
-  { label: "Recipes", href: "/recipes" },
-  { label: "Contact", href: "/contact" },
+  { label: "Shop", href: "/#products" },
+  { label: "About Us", href: "/#about" },
+  { label: "Why Maavitram", href: "/#why-maavitram" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export interface AdminNavItem extends NavItem {

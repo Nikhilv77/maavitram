@@ -26,7 +26,10 @@ const promises = [
 
 export function IngredientPromise() {
   return (
-    <section className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-18">
+    <section
+      id="why-maavitram"
+      className="relative scroll-mt-4 overflow-hidden bg-white py-12 sm:py-16 lg:py-18"
+    >
       <Container>
         <div className="mx-auto max-w-3xl text-center">
           <p className="flex items-center justify-center gap-3 text-[10px] font-semibold tracking-[0.22em] text-foreground/55 uppercase sm:text-[11px]">

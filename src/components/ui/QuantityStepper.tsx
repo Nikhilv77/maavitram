@@ -9,6 +9,8 @@ interface QuantityStepperProps {
   min?: number;
   max?: number;
   label: string;
+  /** Overrides the track styling — the storefront sits it on white. */
+  className?: string;
   /** Forwarded to the text field so a dialog can focus it on open. */
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
@@ -28,6 +30,7 @@ export function QuantityStepper({
   min = 1,
   max = 99_999,
   label,
+  className,
   inputProps,
 }: QuantityStepperProps) {
   const clamp = (next: number) => Math.min(max, Math.max(min, next));
@@ -39,7 +42,12 @@ export function QuantityStepper({
   );
 
   return (
-    <div className="inline-flex items-center gap-1 rounded-md bg-background p-1">
+    <div
+      className={cn(
+        "inline-flex items-center gap-1 rounded-md bg-background p-1",
+        className,
+      )}
+    >
       <button
         type="button"
         onClick={() => onChange(clamp(value - 1))}
